@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-wt-black: #121212;
+  --color-wt-charcoal: #1F1F1F;
+  --color-wt-gold: #B59252;
+  --color-wt-gold-light: #CFAA76;
+  --color-wt-white: #F5EFE6;
+
+  --font-cinzel: Cinzel, serif;
+  --font-playfair: "Playfair Display", serif;
+  --font-inter: Inter, sans-serif;
+}
+
+
+@layer base {
+  body {
+    @apply bg-wt-black text-wt-white font-inter;
+  }
+}
+
+@media print {
+  @page {
+    margin: 0;
+    size: auto;
+  }
+
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
