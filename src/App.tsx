@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { ControlSidebar } from './components/ControlSidebar';
 import { InvoiceView } from './components/InvoiceView';
 import { QCSlipView } from './components/QCSlipView';
-import { type Product, type CartItem, type CurrencyCode, CURRENCIES } from './constants';
+import { type Product, type CartItem, type CurrencyCode } from './constants';
 import { generateConciergeNote } from './services/geminiService';
 
 function App() {
