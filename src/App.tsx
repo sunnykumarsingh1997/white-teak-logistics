@@ -4,6 +4,7 @@ import { InvoiceView } from './components/InvoiceView';
 import { QCSlipView } from './components/QCSlipView';
 import { type Product, type CartItem, type CurrencyCode } from './constants';
 import { generateConciergeNote } from './services/geminiService';
+import { Printer } from 'lucide-react';
 
 function App() {
   const [customer, setCustomer] = useState({
@@ -18,6 +19,7 @@ function App() {
   const [conciergeNote, setConciergeNote] = useState('');
   const [isGeneratingNote, setIsGeneratingNote] = useState(false);
   const [currency, setCurrency] = useState<CurrencyCode>('USD');
+  const [printMode, setPrintMode] = useState<'all' | 'invoice' | 'qc'>('all');
 
   const addToCart = (product: Product) => {
     setCart(prev => {
@@ -79,6 +81,17 @@ function App() {
     }
   };
 
+  const handlePrint = (mode: 'all' | 'invoice' | 'qc') => {
+    setPrintMode(mode);
+    // Use setTimeout to allow state update to reflect in DOM before printing
+    setTimeout(() => {
+      window.print();
+      // Reset to 'all' after print dialog closes (or immediately, as print blocks)
+      // In practice, it's safer to leave it or reset it. Let's reset for better UX.
+      setPrintMode('all');
+    }, 100);
+  };
+
   return (
     <div className="flex h-screen bg-gray-100 overflow-hidden font-inter">
       {/* Sidebar - Hidden on Print */}
@@ -106,35 +119,55 @@ function App() {
         <div className="print:hidden w-full max-w-[210mm] bg-wt-charcoal text-wt-white p-4 rounded shadow-lg flex justify-between items-center">
           <div>
             <h2 className="font-cinzel font-bold">Document Preview</h2>
-            <p className="text-xs text-gray-400">Review the Invoice and QC Slip below before printing.</p>
+            <p className="text-xs text-gray-400">Select a document to print.</p>
           </div>
-          <button
-            onClick={() => window.print()}
-            className="bg-wt-gold text-wt-black px-6 py-2 rounded font-bold hover:bg-white transition-colors"
-          >
-            Print Documents
-          </button>
+          <div className="flex gap-2">
+            <button
+              onClick={() => handlePrint('invoice')}
+              className="bg-wt-black border border-wt-gold/30 text-wt-gold px-4 py-2 rounded text-xs font-bold hover:bg-wt-gold hover:text-wt-black transition-colors flex items-center gap-2"
+            >
+              <Printer size={14} /> Invoice
+            </button>
+            <button
+              onClick={() => handlePrint('qc')}
+              className="bg-wt-black border border-wt-gold/30 text-wt-gold px-4 py-2 rounded text-xs font-bold hover:bg-wt-gold hover:text-wt-black transition-colors flex items-center gap-2"
+            >
+              <Printer size={14} /> QC Slip
+            </button>
+            <button
+              onClick={() => handlePrint('all')}
+              className="bg-wt-gold text-wt-black px-6 py-2 rounded font-bold hover:bg-white transition-colors flex items-center gap-2"
+            >
+              <Printer size={16} /> Print All
+            </button>
+          </div>
         </div>
 
         {/* Documents */}
         <div className="print:w-full">
-          <InvoiceView
-            customer={customer}
-            cart={cart}
-            invoiceDate={invoiceDate}
-            trackingId={trackingId}
-            conciergeNote={conciergeNote}
-            currency={currency}
-          />
+          {/* Invoice Wrapper */}
+          <div className={printMode === 'qc' ? 'hidden print:hidden' : 'block'}>
+            <InvoiceView
+              customer={customer}
+              cart={cart}
+              invoiceDate={invoiceDate}
+              trackingId={trackingId}
+              conciergeNote={conciergeNote}
+              currency={currency}
+            />
+          </div>
 
           {/* Spacer for screen view */}
-          <div className="h-8 print:hidden"></div>
+          <div className={`h-8 print:hidden ${printMode !== 'all' ? 'hidden' : ''}`}></div>
 
-          <QCSlipView
-            cart={cart}
-            trackingId={trackingId}
-            invoiceDate={invoiceDate}
-          />
+          {/* QC Slip Wrapper */}
+          <div className={printMode === 'invoice' ? 'hidden print:hidden' : 'block'}>
+            <QCSlipView
+              cart={cart}
+              trackingId={trackingId}
+              invoiceDate={invoiceDate}
+            />
+          </div>
         </div>
       </main>
     </div>

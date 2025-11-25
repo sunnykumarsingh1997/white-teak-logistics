@@ -85,7 +85,7 @@ export const QCSlipView: React.FC<QCSlipViewProps> = ({
                     <div className="space-y-8 mt-8">
                         <div className="flex justify-between items-end border-b border-gray-400 pb-1">
                             <span className="font-mono text-sm">Packer Signature:</span>
-                            <span className="font-handwriting text-xl text-blue-900 transform -rotate-2">John Doe</span>
+                            <span className="font-handwriting text-xl text-blue-900 transform -rotate-2">Muhammed Naeem ali</span>
                         </div>
                         <div className="flex justify-between items-end border-b border-gray-400 pb-1">
                             <span className="font-mono text-sm">Supervisor Sign:</span>
@@ -97,7 +97,7 @@ export const QCSlipView: React.FC<QCSlipViewProps> = ({
                     <div className="absolute top-1/2 right-4 transform -translate-y-1/2 rotate-12 border-4 border-green-700 text-green-700 p-2 rounded opacity-80 pointer-events-none">
                         <div className="border border-green-700 p-1 px-4 text-center">
                             <div className="font-black text-xl uppercase tracking-widest">PASSED</div>
-                            <div className="text-[10px] font-mono">WHITE TEAK QC</div>
+                            <div className="text-[10px] font-mono">WHITETEAKLLC</div>
                         </div>
                     </div>
                 </div>
